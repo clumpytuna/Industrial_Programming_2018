@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import pika
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(
-        host='amqp://guest:guest@localhost:5672'))
+connection = pika.BlockingConnection(pika.URLParameters("amqp://rabbitmq:rabbitmq@localhost:5672"))
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')

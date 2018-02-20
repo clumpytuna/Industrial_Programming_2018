@@ -14,5 +14,5 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 # Define environment variable
 ENV NAME World
 
-# Run app.py when the container launches
+# Run producer.py when the container launches
 CMD ["python", "consumer.py"]
