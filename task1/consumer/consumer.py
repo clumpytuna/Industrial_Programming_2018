@@ -16,7 +16,7 @@ print(' [*] Waiting for messages. To exit press CTRL+C')
 
 def callback(ch, method, properties, body):
 
-    client = MongoClient('mongodb://myusername:mypassword@mongo:27017')
+    client = MongoClient('mongo')
 
     db = client['test-database']
     collection = db['test-collection']
