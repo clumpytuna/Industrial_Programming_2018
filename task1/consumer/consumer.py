@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 import time
 import pika
-import pymongo
 from pymongo import MongoClient
 
 time.sleep(10)
-
-flag = 0
 
 connection = pika.BlockingConnection(pika.URLParameters("amqp://rabbitmq:rabbitmq@rabbit"))
 
@@ -18,12 +15,15 @@ print(' [*] Waiting for messages. To exit press CTRL+C')
 
 
 def callback(ch, method, properties, body):
-    print(" [x] Received %s" % (body,))
-    client = MongoClient('mongodb://alice:abc123@localhost:27017')
-    db = client.sampleDB
-    if not flag:
-        db.create_collection("strings")
-    collection = db['strings']
+
+    client = MongoClient('mongodb://myusername:mypassword@mongo:27017')
+
+    db = client['test-database']
+    collection = db['test-collection']
+    doc = {"author": str(body)}
+    collection.insert_one(doc)
+    client.close()
+
 
 channel.basic_consume(callback,
                       queue='hello',

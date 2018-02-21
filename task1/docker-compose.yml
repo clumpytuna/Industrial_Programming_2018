@@ -5,10 +5,12 @@ services:
 
     depends_on:
      - rabbit
+     - mongo
     #command: ["./wait-for-it.sh", "db:5432", "--", "python", "consumer.py"]
 
     networks:
-      - webnet
+      - backend
+
   rabbit:
     image: rabbitmq
 
@@ -20,14 +22,26 @@ services:
       - "5672:5672"
 
     networks:
-      - webnet
-#  mongo:
-#    image: mongo
-#    ports:
-#      - "27017:27017"
+      - backend
+
+  mongo:
+    image: mongo
+
+    depends_on:
+     - rabbit
+
+    ports:
+      - "27017:27017"
+
 #    volumes:
-#      - "/home/docker/data:/data"
-#    networks:
-#      - webnet
+#    - /Users/clumpy/docker/mongodb:/mongo/db
+
+    environment:
+      MONGODB_USERNAME: "myusername"
+      MONGODB_PASSWORD: "mypassword"
+      MONGODB_DATEBASE: "test-database"
+
+    networks:
+      - backend
 networks:
-  webnet:
+  backend:
