@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>My toDoList</title>
+    </head>
+    <body>
+        <h1>We are happy to introduce you to toDoList 1.0</h1>
+        <h2>List of active affairs:</h2>
+        {% if active_affairs %}
+            <ul>
+            {% for affair in active_affairs %}
+                <li>
+                    <a>{{ affair.affair_text }}
+                        <form action="{% url 'todolist:doer' affair.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" name="doer" id="doer{{ affair.id }}" value="Done!" />
+                        </form>
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No active affairs are available.</p>
+        {% endif %}
+
+        <h2>List of completed affairs:</h2>
+        {% if inactive_affairs %}
+            <ul>
+            {% for affair in inactive_affairs %}
+                <li>
+                    <a>{{ affair.affair_text }}</a>
+                    <form action="{% url 'todolist:doer' affair.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="doer" id="doer{{ affair.id }}" value="Undone!" />
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No inactive affairs are available.</p>
+        {% endif %}
+
+        <h2> Add new affairs: </h2>
+        <form action="{% url 'todolist:adder'%}" method="post">
+        {% csrf_token %}
+        <label for="new_affair">New affair: </label>
+        <input id="new_affair" type="text" name="new_affair" value="{{ new_affair_text }}">
+        <input type="submit" value="OK">
+        </form>
+    </body>
+</html>
+
+
+
